@@ -87,7 +87,7 @@ int main () {
 
     do{
 
-        if(winner == 1){
+        if(winner > 0){
 
             num = rand() % 100 + 1;
             guess = 0;
