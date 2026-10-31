@@ -96,7 +96,7 @@ int main () {
             twoTrue = 0;
             threeTrue = 0;
 
-            printf("\n================================\n");
+            printf("================================\n");
             printf("\nWould you like to keeep playing(Y/N)? ");
             scanf(" %c", &restart);
 
