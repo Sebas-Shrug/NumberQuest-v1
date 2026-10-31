@@ -7,6 +7,7 @@ A small but meaningful update to NumberQuest!
 - Introduced score-based ending dialogues.
 - Improved the gambling mechanic with randomized number placement.
 - Fixed several bugs and refined gameplay.
+- Added a restartability feature, allowing players to start a new round without relaunching the program.
 
 # NumberQuest v1.0
 
