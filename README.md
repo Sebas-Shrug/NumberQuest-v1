@@ -1,3 +1,13 @@
+# NumberQuest v1.1
+
+A small but meaningful update to NumberQuest!
+
+## What's New
+- Added an optional scoring guide before starting.
+- Introduced score-based ending dialogues.
+- Improved the gambling mechanic with randomized number placement.
+- Fixed several bugs and refined gameplay.
+
 # NumberQuest v1.0
 
 **Date:** October 30, 2026  
@@ -22,16 +32,6 @@ Guess the randomly generated number to finish the game and see your final score.
 ---
 
 *Version 1.0 – Initial upload.*
-
-# NumberQuest v1.1
-
-A small but meaningful update to NumberQuest!
-
-## What's New
-- Added an optional scoring guide before starting.
-- Introduced score-based ending dialogues.
-- Improved the gambling mechanic with randomized number placement.
-- Fixed several bugs and refined gameplay.
 
 ---
 
