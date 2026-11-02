@@ -20,9 +20,14 @@ char unknown(char start){
             
         printf("\nInvalid Answer! Only (Y/N): ");
         scanf(" %c", &start);
-            start = toupper(start);
+        start = toupper(start);
 
-    }while(start != 'N' && start != 'Y');
+        if(start == 'N'){
+            printf("Goodbye, thanks for playing!");
+            return 0;
+        }
+
+    }while(start != 'Y');
 
 }
 
@@ -32,7 +37,7 @@ void errorMessage(){
 
 int main () {
 
-    int num, choice, guess = 0, turn = 0;
+    int num, choice, guess = 0, turn = 0, guesses[101];
     char info, start, restart = 'Y';
 
     int twoTrue = 0,cutChoice; //Cut Half Variables
@@ -41,7 +46,9 @@ int main () {
     int threeTrue = 0,oeChoice; //Odd-Even Variables
     char third [50];
 
-    int diceChoice,dice,gambleNum,counter = 0, secretPosition; //Gamble Variables
+    int diceChoice,dice,gambleNum,counter = 0, secretPosition, gold = 0; //Gamble Variables
+
+    int newLine, listNum, add, listIncr = 0, listFound = 0, space = 0; //List Variables
 
     int score = 100, winner = 0;
     
@@ -90,6 +97,9 @@ int main () {
         if(winner > 0){
 
             num = rand() % 100 + 1;
+            gold = 0;
+            space = 0;
+            listIncr = 0;
             guess = 0;
             turn = 0;
             score = 100;
@@ -104,13 +114,7 @@ int main () {
 
             if(restart != 'N' && restart != 'Y'){
 
-            do{
-                
-                printf("\nInvalid Answer! Only (Y/N): ");
-                scanf(" %c", &restart);
-                restart = toupper(restart);
-
-            }while(restart != 'N' && restart != 'Y');
+            unknown(restart);
 
             }
 
@@ -120,73 +124,76 @@ int main () {
 
         do{
 
-            if(twoTrue == 1 && threeTrue == 1){
+            if(twoTrue > 0 && threeTrue > 0){
             printf("\n================================\n");
-            printf("Turn: %d\n", turn);
+            printf("Turn: %d; Score: %d\n", turn,score);
             printf("What would you like to do?\n");
             printf("1. Guess the number\n");
             printf("2. You already used this! The number is %s 50\n",second);
             printf("3. You already used this! The number is an %s number\n",third);
             printf("4. Gamble gamble gamble!!\n");
-            printf("What would you like to do(1 or 4)? ");
+            printf("5. Check valid numbers\n");
+            printf("What would you like to do(1, 4 or 5)? ");
             scanf("%d", &choice);
 
-            if(choice != 1 && choice != 4){
+            if(choice != 1 && choice != 4 && choice != 5){
             
                 do{
-                    printf("Invalid answer!");
-                    printf("Only 1 or 4!!: ");
+                    printf("\nInvalid answer!");
+                    printf("Only 1, 4 or 5: ");
                     scanf("%d", &choice);
 
-                }while(choice != 1 && choice != 4);
+                }while(choice != 1 && choice != 4 && choice != 5);
 
             }
 
             }
 
-            else if(twoTrue == 1){
+            else if(twoTrue > 0){
             printf("\n================================\n");
-            printf("Turn: %d\n", turn);
+            printf("Turn: %d; Score: %d\n", turn,score);
             printf("What would you like to do?\n");
             printf("1. Guess the number\n");
             printf("2. You already used this! The number is %s 50\n",second);
             printf("3. Odd or Even!\n");
             printf("4. Gamble gamble gamble!!\n");
-            printf("What would you like to do(1, 3 or 4)? ");
+            printf("5. Check valid numbers\n");
+            printf("What would you like to do(1, 3, 4 or 5)? ");
             scanf("%d", &choice);
 
-            if(choice != 1 && choice != 4 && choice != 3){
+            if(choice != 1 && choice != 4 && choice != 3 && choice != 5){
             
                 do{
-                    printf("Invalid answer!");
-                    printf("Only 1, 3 or 4!!: ");
+                    printf("\nInvalid answer!");
+                    printf("Only 1, 3, 4 or 5: ");
                     scanf("%d", &choice);
 
-                }while(choice != 1 && choice != 4 && choice != 3);
+                }while(choice != 1 && choice != 4 && choice != 3 && choice != 5);
 
             }
 
             }
 
-            else if(threeTrue == 1){
+            else if(threeTrue > 0){
             printf("\n================================\n");
-            printf("Turn: %d\n", turn);
+            printf("Turn: %d; Score: %d\n", turn,score);
             printf("What would you like to do?\n");
             printf("1. Guess the number\n");
             printf("2. Cut in half!\n");
             printf("3. You already used this! The number is an %s number\n",third);
             printf("4. Gamble gamble gamble!!\n");
-            printf("What would you like to do(1, 3 or 4)? ");
+            printf("5. Check valid numbers\n");
+            printf("What would you like to do(1, 3, 4 or 5)? ");
             scanf("%d", &choice);
 
-            if(choice != 1 && choice != 4 && choice != 2){
+            if(choice != 1 && choice != 4 && choice != 2 && choice != 5){
             
                 do{
-                    printf("Invalid answer!");
-                    printf("Only 1, 2 or 4!!: ");
+                    printf("\nInvalid answer!");
+                    printf("Only 1, 2, 4 or 5!!: ");
                     scanf("%d", &choice);
 
-                }while(choice != 1 && choice != 4 && choice != 2);
+                }while(choice != 1 && choice != 4 && choice != 2 && choice != 5);
 
             }
 
@@ -195,20 +202,22 @@ int main () {
             else{
 
             printf("\n================================\n");
-            printf("Turn: %d\n", turn);
+            printf("Turn: %d; Score: %d\n", turn,score);
             printf("What would you like to do?\n");
             printf("1. Guess the number\n");
             printf("2. Cut in half!\n");
             printf("3. Odd or Even!\n");
             printf("4. Gamble gamble gamble!!\n");
+            printf("5. Check valid numbers\n");
+            
             printf("What would you like to do? ");
             scanf("%d", &choice);
 
-            if(choice < 1 || choice > 4){
+            if(choice < 1 || choice > 5){
             
                 do{
                     printf("Invalid answer!");
-                    printf("Only 1, 2, 3 or 4!!: ");
+                    printf("Only 1-5: ");
                     scanf("%d", &choice);
 
                 }while(choice < 1 || choice > 4);
@@ -224,6 +233,8 @@ int main () {
                     printf("\nWhat would your guess be? ");
                     scanf("%d", &guess);
 
+                    guesses[turn] = guess;
+
                     if(guess < 1 || guess > 100){
                         errorMessage();
                     }
@@ -231,9 +242,12 @@ int main () {
                     }while(guess < 1 || guess > 100);
 
                     if(guess != num){
+
                         printf("You got it wrong! Try again!\n");
                         turn+=1;
+
                     }
+                    
 
                 }
 
@@ -295,12 +309,12 @@ int main () {
 
                         if(num > 50) {
                             strcpy(second, "MORE THAN");
+                            twoTrue = 1;
                         }
                         else if(num < 50){
                             strcpy(second, "LESS THAN");
+                            twoTrue = 2;
                         }
-
-                        twoTrue+=1;
 
                     }
 
@@ -353,13 +367,18 @@ int main () {
                         }
 
                         if(num % 2 == 0) {
-                        strcpy(third, "EVEN");
-                        }
-                        else {
-                            strcpy(third, "ODD");
+
+                            strcpy(third, "EVEN");
+                            threeTrue = 1;
+
                         }
 
-                        threeTrue+=1;
+                        else{
+
+                            strcpy(third, "ODD");
+                            threeTrue = 2;
+
+                        }
                     
                     }
 
@@ -380,8 +399,9 @@ int main () {
 
                         if(dice == diceChoice){
                             printf("GOLDDDD GOLDDDD GOLDDDD GOLDDDD GOLDDDD!!!!!!\n");
-                            printf("YOU STRUCK THE JACKPOT!!! THE NUMBER IS %d!!!!\n", num);
+                            printf("YOU STRUCK THE JACKPOT!!\n");
                             guess = num;
+                            gold = 1;
                         }
 
                         else if(dice == diceChoice - 1 || dice == diceChoice + 1){
@@ -408,6 +428,8 @@ int main () {
                             printf("Your number is in this bundle of numbers! Go whats your guess? ");
                             scanf("%d", &guess);
 
+                            guesses[turn] = guess;
+
                             if(guess != num){
                                 printf("You had all that help and still didn't guess it?? WTH!!\n");
                             }
@@ -428,16 +450,123 @@ int main () {
 
                     }
 
+                    if(choice == 5){
+
+                        printf("\n================================\n");
+                        printf("Here is the list of all the numbers left:\n\n");
+
+                        for (newLine = 1; newLine <= 10; newLine++) {
+
+                            if(space == 0){
+
+                                for(listNum = 1; listNum <=10 ; listNum++){
+                                
+                                    for(int i = 0; i <= turn; i++){
+
+                                        add = listNum + listIncr;
+
+                                        if(guesses[i] == add){
+                                            listFound = 1;
+                                            break;
+                                        }
+
+                                    }   
+
+                                        if(twoTrue == 1 && add < 50){
+                                            printf("   ");
+                                        }
+
+                                        else if(threeTrue == 2 && add % 2 == 0){
+                                            printf("   ");
+                                        }
+
+                                        else if(threeTrue == 1 && add % 2 > 0){
+                                            printf("   ");
+                                        }
+
+                                        else if(listFound){
+                                            printf("   ");
+                                            listFound = 0;
+                                        }
+                                        
+                                        else{
+                                            printf("%d  ",add);
+                                        }
+
+                                }
+
+                            }
+
+                            else{
+
+                                for(listNum = 1; listNum <=10 ; listNum++){
+                                
+                                    for(int i = 0; i <= turn; i++){
+
+                                        add = listNum + listIncr;
+
+                                        if(guesses[i] == add){
+                                            listFound = 1;
+                                            break;
+                                        }
+
+                                    }   
+
+                                        if(twoTrue == 1 && add < 50){
+                                            printf("   ");
+                                            
+                                        }
+
+                                        else if(threeTrue == 2 && add % 2 == 0){
+                                            printf("   ");
+                                        }
+
+                                        else if(threeTrue == 1 && add % 2 > 0){
+                                            printf("   ");
+                                        }
+
+                                        else if(twoTrue == 2 && add > 50){
+                                            printf("   ");
+                                        }
+
+                                        else if(listFound){
+                                            printf("   ");
+                                            listFound = 0;
+                                        }
+
+                                        else{
+                                            printf("%d ",add);
+
+                                    }
+
+                                }
+
+                            }
+  
+                        printf("\n");
+                        listIncr+=10;
+                        space = 1;
+
+                        }
+
+                    }
+
+                space = 0;
+                listIncr = 0;
+
+                if(choice != 5 && gold != 1){
+                    score--;
+                }
+
             }while(guess != num);
 
-            score-=turn;
-
             printf("\n================================\n");
+            printf("The number was %d!!\n",num);
 
             if(score == 100){
                 printf("YOU SCORED PERFECTLY!!!! CONGRATULATIONS!!!\n");
                 printf("You're the goat of Number Quest W W W W W W W\n");
-                printf("Total score: 100/100!!!!!\n",score);
+                printf("Total score: 100/100!!!!!\n");
             }
 
             else if(score < 100 && score >= 75){
@@ -477,5 +606,7 @@ int main () {
     }while(restart != 'N');    
 
     printf("\nThanks for playing! Goodbye!");
+
+    return 0;
 
 }
