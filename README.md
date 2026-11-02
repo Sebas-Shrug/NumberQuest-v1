@@ -1,3 +1,15 @@
+# NumberQuest v1.2 — Update Notes
+
+## New Features
+- Added a **Check Valid Numbers** option, allowing players to view all remaining possible numbers during gameplay.
+- Added a live score display, making score deductions and the current score transparent throughout the game.
+
+## Bug Fixes
+- Fixed a restart validation bug where the game would fail to exit properly after receiving an invalid response followed by `N`.
+- Fixed a replay bug that caused the game to malfunction after the first retry due to inconsistent variable values.
+
+---
+
 # NumberQuest v1.1
 
 A small but meaningful update to NumberQuest!
@@ -8,6 +20,8 @@ A small but meaningful update to NumberQuest!
 - Improved the gambling mechanic with randomized number placement.
 - Fixed several bugs and refined gameplay.
 - Added a restartability feature, allowing players to start a new round without relaunching the program.
+- 
+---
 
 # NumberQuest v1.0
 
