@@ -12,8 +12,6 @@
 
 # NumberQuest v1.1
 
-A small but meaningful update to NumberQuest!
-
 ## What's New
 - Added an optional scoring guide before starting.
 - Introduced score-based ending dialogues.
