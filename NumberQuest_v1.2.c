@@ -22,23 +22,16 @@ char unknown(char start){
         scanf(" %c", &start);
         start = toupper(start);
 
-        if(start == 'N'){
-            printf("Goodbye, thanks for playing!");
-            return 0;
-        }
+    }while(start != 'Y' && start != 'N');
 
-    }while(start != 'Y');
-
-}
-
-void errorMessage(){
-    printf("Not a valid number! Please only input 1-100!\n");
 }
 
 int main () {
 
-    int num, choice, guess = 0, turn = 0, guesses[101];
+    int num, choice, guess = 0, turn = 0, guesses[101], remainNum[101], match = 0, foundNum = 0;
     char info, start, restart = 'Y';
+
+    int valid = 0; //guess variables
 
     int twoTrue = 0,cutChoice; //Cut Half Variables
     char second [50];
@@ -46,12 +39,13 @@ int main () {
     int threeTrue = 0,oeChoice; //Odd-Even Variables
     char third [50];
 
-    int diceChoice,dice,gambleNum,counter = 0, secretPosition, gold = 0; //Gamble Variables
+    int diceChoice, dice, gambleNum, counter = 1, secretPosition, gold = 0, storedNumber[12], lucky = 0, divide = 1, gambleFound = 0, showedNum[101], innerCounter = 0; //Gamble Variables
 
     int newLine, listNum, add, listIncr = 0, listFound = 0, space = 0; //List Variables
 
     int score = 100, winner = 0;
-    
+
+    int debug = 0;
 
     printf("Welcome to number quest!!\n");
     printf("I will generate a number from 1-100, you must guess which number it is!\n");
@@ -80,7 +74,7 @@ int main () {
 
     if(start != 'N' && start != 'Y'){
 
-        unknown(start);
+        start = unknown(start);
 
     }
 
@@ -97,6 +91,8 @@ int main () {
         if(winner > 0){
 
             num = rand() % 100 + 1;
+            divide = 0;
+            lucky = 0;
             gold = 0;
             space = 0;
             listIncr = 0;
@@ -139,6 +135,7 @@ int main () {
             if(choice != 1 && choice != 4 && choice != 5){
             
                 do{
+
                     printf("\nInvalid answer!");
                     printf("Only 1, 4 or 5: ");
                     scanf("%d", &choice);
@@ -220,26 +217,141 @@ int main () {
                     printf("Only 1-5: ");
                     scanf("%d", &choice);
 
-                }while(choice < 1 || choice > 4);
+                }while(choice < 1 || choice > 5);
 
             }
 
+
+        }
+
+        for(int i = 1; i<=101 ; i++){
+
+            if(twoTrue == 1 && i < 50){ //Removes less than 50
+                
+                remainNum[i] = -1;
+
             }
+
+            else if(twoTrue == 2 && i > 50){ //Removes more than 50
+                
+                remainNum[i] = -1;
+
+            }
+
+            else if(threeTrue == 1 && i % 2 > 0){ //Removes odd numbers
+
+                remainNum[i] = -1;
+
+            }
+
+            else if(threeTrue == 2 && i % 2 == 0){ //Removes even numbers
+
+                remainNum[i] = -1;
+
+            }
+                    
+            else{
+
+                for(int j = 1; j <= 101; j++){
+
+                    if(lucky > 0){
+
+                        for(int x = 0; x <= counter; x++){
+
+                            if(i == storedNumber[x]){
+                                match = 0;
+                                foundNum = storedNumber[x];
+                                break;
+                            }
+
+                            else{
+                                match = 1;
+                            }    
+
+                        }
+
+                    }
+
+                    else if(i == guesses[j]){
+
+                        match = 1;
+                        break;
+
+                    }
+
+                    if(foundNum > 0){
+
+                        if(foundNum == guesses[j]){
+                            match = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+
+                    if(match == 1){
+                        remainNum[i] = -1;
+                    }
+
+                    else{
+                        remainNum[i] = i;
+                    }
+
+                    match = 0;
+                    foundNum = 0;
+
+            }
+                                        
+        }
+
+        /*for(int i = 1; i<=100 ; i++){
+
+            printf("%d\n", remainNum[i]);
+
+        }*/   //Debugger
 
             if(choice == 1){
 
                     do{
 
-                    printf("\nWhat would your guess be? ");
-                    scanf("%d", &guess);
+                        valid = 0;
 
-                    guesses[turn] = guess;
+                        printf("\nWhat would your guess be? ");
+                        scanf("%d", &guess);
 
-                    if(guess < 1 || guess > 100){
-                        errorMessage();
-                    }
+                        guesses[turn] = guess;
 
-                    }while(guess < 1 || guess > 100);
+                        for(int d = 1; d <= 101; d++){
+
+                            if(guess < 1 || guess > 100){
+
+                                printf("Not a valid number! Please only input 1-100!\n");
+                                break;
+
+                            }
+
+                            else if(guess != remainNum[d]){
+
+                                valid = -1;
+
+                            }
+
+                            else{
+
+                                valid = 1;
+                                break;
+
+                            }
+                            
+
+                        }
+
+                        if(valid == -1){
+                            printf("%d has already been excluded from the list, try a different number!\n", guess);
+                        }
+
+                    }while(valid < 1);
 
                     if(guess != num){
 
@@ -248,6 +360,11 @@ int main () {
 
                     }
                     
+                    else{
+
+                        printf("Congratulations you got it!!!!\n");
+
+                    } 
 
                 }
 
@@ -383,61 +500,192 @@ int main () {
                     }
 
                     if(choice == 4){
+
                         printf("\nGAMBLE GAMBLE GAMBLE!!!!\n");
                         printf("I just rolled a dice... Guess what number its on and test your luck..\n");
 
-                        do{
-                        printf("Enter a number(1-6): ");
-                        scanf("%d", &diceChoice);
+                        dice = rand()%6 + 1;
+                         printf("\n%d\n", dice); //debugger
 
-                        if(diceChoice < 1 || diceChoice > 6){
-                            printf("Invalid number!\n");
-                        }
+                        do{
+
+                            printf("Enter a number(1-6): ");
+                            scanf("%d", &diceChoice);
+
+                            if(diceChoice < 1 || diceChoice > 6){
+
+                                printf("Invalid number!\n");
+
+                            }
+
                         }while(diceChoice < 1 || diceChoice > 6);
 
-                        dice = rand()%6 + 1;
-
                         if(dice == diceChoice){
+
                             printf("GOLDDDD GOLDDDD GOLDDDD GOLDDDD GOLDDDD!!!!!!\n");
                             printf("YOU STRUCK THE JACKPOT!!\n");
                             guess = num;
                             gold = 1;
+
                         }
 
                         else if(dice == diceChoice - 1 || dice == diceChoice + 1){
 
+                            for(int c = 1; c <= counter; c++){ //resets everything for a brand new list
+
+                                storedNumber[c] = -1;
+
+                            }
+
+                            counter = 1;
+
                             printf("Close enough!! So I'll help you out a bit!!\n");
-                            secretPosition = rand()%10 + 1;
-                            counter = 0;
+
+                            if(lucky == 0){
+
+                                secretPosition = rand()%10 + 1;
+
+                            }
+
+                            else if(lucky == 1){
+
+                                secretPosition = rand()%5 + 1;
+
+                            }
+
+                            else if(lucky == 2){
+
+                                secretPosition = rand()%3 + 1;
+
+                            }
+
+                            lucky+=1;
                             
                             do{
 
-                                counter+=1;
-                                gambleNum = rand()%100 + 1;
+                                do{
+
+                                    gambleFound = 0;
+                                    innerCounter++;
+
+                                    gambleNum = rand()%100 + 1;
+
+                                    for(int a = 1; a <= 101; a++){
+
+                                        if(gambleNum == remainNum[a] && gambleNum != num){ //only accepts numbers that havent been guessed and isnt the number
+
+                                            gambleFound = 1;
+                                            break;
+
+                                        }
+                                        
+                                    }
+
+                                    if(gambleFound == 1){
+
+                                        for(int b = 1; b <= innerCounter; b++){
+
+                                            if(showedNum[b] == gambleNum){
+
+                                                showedNum[innerCounter] = -1; //if a number already showed is the same as the randomized Number, find another number
+                                                gambleFound = 0;
+                                                break;
+                        
+                                            }
+
+                                        }
+
+                                        if(gambleFound == 1){
+
+                                            showedNum[innerCounter] = gambleNum;
+
+                                        }
+
+                                    }
+
+                                }while(!gambleFound);
 
                                 if(counter == secretPosition){
+
                                     printf("%d ",num);
+                                    storedNumber[counter] = num;
+                                    
                                 }
 
                                 else{
+
                                     printf("%d ",gambleNum);
+                                    storedNumber[counter] = gambleNum;
+
                                 }
 
-                            }while(counter <= 9);
+                                counter+=1;
 
-                            printf("Your number is in this bundle of numbers! Go whats your guess? ");
-                            scanf("%d", &guess);
+                            }while(counter <= 10 / divide);
 
-                            guesses[turn] = guess;
+                            printf("\nYour number is in this pool! ");
+
+                            do{
+
+                                valid = 0;
+
+                                printf("What would your guess be? ");
+                                scanf("%d", &guess);
+
+                                guesses[turn] = guess;
+
+                                for(int d = 1; d <= counter; d++){
+
+                                    if(guess == storedNumber[d]){
+
+                                        valid = 1;
+                                        break;
+
+                                    }
+
+                                }
+
+                                if(!valid){
+
+                                    if(guess < 1 || guess > 100){
+
+                                        printf("Not a valid number! Please only input 1-100!\n");
+                                        break;
+
+                                    }
+
+                                    else{
+
+                                        printf("Are you blind! %d is not a part of the pool!! Try again!\n", guess);  
+
+                                    }
+
+                                }
+
+                            }while(!valid);
 
                             if(guess != num){
-                                printf("You had all that help and still didn't guess it?? WTH!!\n");
+
+                                printf("You got it wrong! Try again!\n");
+
                             }
+                            
                             else{
-                                printf("\nWHAT NO WAY!!! YOU GOT IT!!\n");
-                            }
+
+                                printf("Congratulations you got it!!!!\n");
+
+                            } 
 
                             turn+=1;
+                            divide++;
+
+                            for(int c = 1; c <= innerCounter; c++){ //resets everything for a brand new list
+
+                                showedNum[c] = -1;
+
+                            }
+
+                            innerCounter = 0;
 
                         }
 
@@ -460,17 +708,33 @@ int main () {
                             if(space == 0){
 
                                 for(listNum = 1; listNum <=10 ; listNum++){
+
+                                    add = listNum + listIncr;
                                 
                                     for(int i = 0; i <= turn; i++){
 
-                                        add = listNum + listIncr;
-
                                         if(guesses[i] == add){
                                             listFound = 1;
-                                            break;
                                         }
 
-                                    }   
+                                        else if(lucky > 0 && listFound == 0){
+                                    
+                                            for(int i = 1; i <= counter; i++){
+
+                                                if(storedNumber[i] == add){
+                                                    listFound = 0;
+                                                    break;
+                                                }
+                                            
+                                                else if(storedNumber[i] != add){
+                                                    listFound = 1;
+                                                }
+
+                                            }
+
+                                        }
+
+                                    }
 
                                         if(twoTrue == 1 && add < 50){
                                             printf("   ");
@@ -484,14 +748,15 @@ int main () {
                                             printf("   ");
                                         }
 
-                                        else if(listFound){
+                                        else if(listFound == 1){
                                             printf("   ");
-                                            listFound = 0;
                                         }
                                         
                                         else{
                                             printf("%d  ",add);
                                         }
+
+                                    listFound = 0;
 
                                 }
 
@@ -500,21 +765,36 @@ int main () {
                             else{
 
                                 for(listNum = 1; listNum <=10 ; listNum++){
+
+                                    add = listNum + listIncr;
                                 
                                     for(int i = 0; i <= turn; i++){
 
-                                        add = listNum + listIncr;
-
                                         if(guesses[i] == add){
                                             listFound = 1;
-                                            break;
                                         }
 
-                                    }   
+                                        else if(lucky > 0 && listFound == 0){
+                                    
+                                            for(int i = 1; i <= counter; i++){
 
+                                                if(storedNumber[i] == add){
+                                                    listFound = 0;
+                                                    break;
+                                                }
+                                            
+                                                else if(storedNumber[i] != add){
+                                                    listFound = 1;
+                                                }
+
+                                            }
+
+                                        }
+
+                                    }
+                                
                                         if(twoTrue == 1 && add < 50){
                                             printf("   ");
-                                            
                                         }
 
                                         else if(threeTrue == 2 && add % 2 == 0){
@@ -529,15 +809,15 @@ int main () {
                                             printf("   ");
                                         }
 
-                                        else if(listFound){
+                                        else if(listFound == 1){
                                             printf("   ");
-                                            listFound = 0;
                                         }
 
                                         else{
                                             printf("%d ",add);
+                                        }
 
-                                    }
+                                    listFound = 0;
 
                                 }
 
