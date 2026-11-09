@@ -9,6 +9,7 @@
 ## Improvements
 - Improved number validation to ensure guesses are consistent with the remaining possible answers.
 - Refined the game's number-tracking logic to support the updated gambling mechanics.
+- Fixed some issues with the restar-tability feature
 
 ---
 
