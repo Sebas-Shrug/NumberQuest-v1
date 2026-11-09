@@ -1,3 +1,17 @@
+# NumberQuest v1.3 — Update Notes
+
+## New Features
+- **Reworked the Gambling System:** Modified the gambling mechanics and introduced new features to make each gamble more interesting.
+- **Progressive Number Pools:** Successfully getting close to the dice roll rewards the player with a pool of possible numbers. Repeated successes make the pool progressively smaller (10 → 5 → 3).
+- **Array-Based Number Tracking:** Implemented an array system to keep track of the remaining possible numbers throughout the game.
+- **Repeated Guess Prevention:** Added validation that prevents players from guessing numbers that have already been excluded.
+
+## Improvements
+- Improved number validation to ensure guesses are consistent with the remaining possible answers.
+- Refined the game's number-tracking logic to support the updated gambling mechanics.
+
+---
+
 # NumberQuest v1.2 — Update Notes
 
 ## New Features
