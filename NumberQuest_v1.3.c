@@ -33,10 +33,10 @@ int main () {
 
     int valid = 0; //guess variables
 
-    int twoTrue = 0,cutChoice; //Cut Half Variables
+    int twoTrue = 0, cutChoice; //Cut Half Variables
     char second [50];
 
-    int threeTrue = 0,oeChoice; //Odd-Even Variables
+    int threeTrue = 0, oeChoice; //Odd-Even Variables
     char third [50];
 
     int diceChoice, dice, gambleNum, counter = 1, secretPosition, gold = 0, storedNumber[12], lucky = 0, divide = 1, gambleFound = 0, showedNum[101], innerCounter = 0; //Gamble Variables
@@ -44,8 +44,6 @@ int main () {
     int newLine, listNum, add, listIncr = 0, listFound = 0, space = 0; //List Variables
 
     int score = 100, winner = 0;
-
-    int debug = 0;
 
     printf("Welcome to number quest!!\n");
     printf("I will generate a number from 1-100, you must guess which number it is!\n");
@@ -90,17 +88,16 @@ int main () {
 
         if(winner > 0){
 
-            num = rand() % 100 + 1;
-            divide = 0;
-            lucky = 0;
-            gold = 0;
-            space = 0;
-            listIncr = 0;
-            guess = 0;
-            turn = 0;
+            //Game Variables
+            num = rand() % 100 + 1; turn = 0;
+
+            //Option Reset
+            twoTrue = 0; threeTrue = 0;
+
+            //Gamble variables
+            counter = 1; gold = 0; lucky = 0; divide = 1;
+
             score = 100;
-            twoTrue = 0;
-            threeTrue = 0;
 
             printf("================================\n");
             printf("\nWould you like to keeep playing(Y/N)? ");
@@ -117,6 +114,16 @@ int main () {
         }
 
         if(restart == 'Y'){
+
+            if(turn == 0){
+
+                for(int e = 0; e <= 101; e++){
+
+                guesses[e] = -1;
+                
+                }
+
+            }
 
         do{
 
@@ -309,7 +316,7 @@ int main () {
 
             printf("%d\n", remainNum[i]);
 
-        }*/   //Debugger
+        } */  //Debugger
 
             if(choice == 1){
 
@@ -322,7 +329,7 @@ int main () {
 
                         guesses[turn] = guess;
 
-                        for(int d = 1; d <= 101; d++){
+                        for(int d = 0; d <= 100; d++){
 
                             if(guess == remainNum[d]){
 
@@ -503,7 +510,7 @@ int main () {
                         printf("I just rolled a dice... Guess what number its on and test your luck..\n");
 
                         dice = rand()%6 + 1;
-                         printf("\n%d\n", dice); //debugger
+                        //printf("\n%d\n", dice); //debugger
 
                         do{
 
@@ -832,7 +839,7 @@ int main () {
                 space = 0;
                 listIncr = 0;
 
-                if(choice != 5 && gold != 1){
+                if(choice != 5 && gold < 1){
                     score--;
                 }
 
@@ -879,6 +886,20 @@ int main () {
             }
 
             winner+=1;
+
+            for(int e = 0; e <= turn; e++){
+
+                guesses[e] = -1;
+
+            }
+
+            for(int e = 1; e <= counter; e++){ //resets everything for a brand new list
+
+                storedNumber[e] = -1;
+
+            }
+
+
         }
 
     }while(restart != 'N');    
