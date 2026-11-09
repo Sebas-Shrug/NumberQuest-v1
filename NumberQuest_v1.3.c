@@ -224,7 +224,7 @@ int main () {
 
         }
 
-        for(int i = 1; i<=101 ; i++){
+        for(int i = 0; i<=100 ; i++){
 
             if(twoTrue == 1 && i < 50){ //Removes less than 50
                 
@@ -252,7 +252,7 @@ int main () {
                     
             else{
 
-                for(int j = 1; j <= 101; j++){
+                for(int j = 0; j <= 100; j++){
 
                     if(lucky > 0){
 
@@ -288,7 +288,7 @@ int main () {
 
                     }
 
-                }
+                } 
 
                     if(match == 1){
                         remainNum[i] = -1;
@@ -324,34 +324,32 @@ int main () {
 
                         for(int d = 1; d <= 101; d++){
 
-                            if(guess < 1 || guess > 100){
-
-                                printf("Not a valid number! Please only input 1-100!\n");
-                                break;
-
-                            }
-
-                            else if(guess != remainNum[d]){
-
-                                valid = -1;
-
-                            }
-
-                            else{
+                            if(guess == remainNum[d]){
 
                                 valid = 1;
                                 break;
 
                             }
-                            
 
                         }
 
-                        if(valid == -1){
-                            printf("%d has already been excluded from the list, try a different number!\n", guess);
+                        if(!valid){
+
+                            if(guess < 1 || guess > 100){
+
+                                printf("Not a valid number! Please only input 1-100!\n");
+
+                            }
+
+                            else{
+
+                                printf("%d has already been excluded from the list, try a different number!\n", guess);
+
+                            }
+
                         }
 
-                    }while(valid < 1);
+                    }while(!valid);
 
                     if(guess != num){
 
