@@ -24,11 +24,13 @@ char unknown(char start){
 
     }while(start != 'Y' && start != 'N');
 
+    return start;
+
 }
 
 int main () {
 
-    int num, choice, guess = 0, turn = 0, guesses[101], remainNum[101], match = 0, foundNum = 0;
+    int num, choice, guess = 0, turn = 0, guesses[101], remainNum[101], match = 0, foundNum = 0, getValue = 0, numStorer = 1000;
     char info, start, restart = 'Y';
 
     int valid = 0; //guess variables
@@ -36,14 +38,21 @@ int main () {
     int twoTrue = 0, cutChoice; //Cut Half Variables
     char second [50];
 
+    int halveLost = 0, halveWon = 0, halveTotal;
+
     int threeTrue = 0, oeChoice; //Odd-Even Variables
     char third [50];
 
     int diceChoice, dice, gambleNum, counter = 1, secretPosition, gold = 0, storedNumber[12], lucky = 0, divide = 1, gambleFound = 0, showedNum[101], innerCounter = 0; //Gamble Variables
 
+    int gambleWon = 0, gambleLost = 0, gambleTotal;
+
     int newLine, listNum, add, listIncr = 0, listFound = 0, space = 0; //List Variables
 
-    int score = 100, winner = 0;
+    int score = 100, winner = 0, guesswin = 0;
+
+    int turnStorer[101], scoreStorer[101], leastTurn, totalTurn = 0, totalGuess = 0, totalScore, bestScore; //Stats Variables
+    float gamblePercentage = 0, halvePercentage = 0;
 
     printf("Welcome to number quest!!\n");
     printf("I will generate a number from 1-100, you must guess which number it is!\n");
@@ -55,7 +64,7 @@ int main () {
 
     if(info != 'N' && info != 'Y'){
 
-        unknown(info);
+        info = unknown(info);
 
     }
 
@@ -89,7 +98,7 @@ int main () {
         if(winner > 0){
 
             //Game Variables
-            num = rand() % 100 + 1; turn = 0;
+            num = rand() % 100 + 1; turn = 0, guesswin = 0;
 
             //Option Reset
             twoTrue = 0; threeTrue = 0;
@@ -97,17 +106,78 @@ int main () {
             //Gamble variables
             counter = 1; gold = 0; lucky = 0; divide = 1;
 
-            score = 100;
+            score = 100; numStorer = 1000; totalTurn = 0, totalScore = 0;
 
-            printf("================================\n");
-            printf("\nWould you like to keeep playing(Y/N)? ");
+            halveTotal = halveLost + halveWon;
+            gambleTotal = gambleWon + gambleLost;
+
+            for(int f = 1; f <= winner; f++){
+
+                getValue = turnStorer[f]; 
+                
+                if(getValue < numStorer){ 
+
+                    numStorer = getValue; 
+
+                }
+
+                totalTurn+=getValue;
+
+            }
+
+            leastTurn = numStorer;
+
+            numStorer = -1000;
+
+            for(int f = 1; f <= winner; f++){
+
+                getValue = scoreStorer[f]; 
+                
+                if(getValue > numStorer){ 
+
+                    numStorer = getValue; 
+
+                }
+
+                totalScore+=getValue; 
+
+            }
+
+            bestScore = numStorer;
+
+            if(gambleWon > 0){
+
+                gamblePercentage = ((float)gambleWon / gambleTotal) * 100;
+
+            }
+
+            if(halveWon > 0){
+
+                halvePercentage = ((float)halveWon / halveTotal) * 100;
+
+            }
+
+            printf("\n==============STATS==============\n");
+            printf("Total tries: %d\n", winner);
+            printf("Total guesses: %d\n", totalGuess);
+            printf("Best Score: %d\n", bestScore);
+            printf("Average Score: %.2f\n", (float)totalScore / winner );
+            printf("Average Turns taken: %.2f\n", (float)totalTurn / winner);
+            printf("Least amount of turns in a game: %d\n", leastTurn);
+            printf("Total Halve choices played: %d\n", halveTotal);
+            printf("Halve choice win percentage: %.2f%%\n", halvePercentage);
+            printf("Total Gamble choices played: %d\n", gambleTotal);
+            printf("Gambling win percentage: %.2f%%\n", gamblePercentage);
+
+            printf("===================================\n");
+            printf("\nWould you like to keep playing(Y/N)? ");
             scanf(" %c", &restart);
 
             restart = toupper(restart);
 
             if(restart != 'N' && restart != 'Y'){
 
-            unknown(restart);
+            restart = unknown(restart);
 
             }
 
@@ -117,13 +187,14 @@ int main () {
 
             if(turn == 0){
 
-                for(int e = 0; e <= 101; e++){
+                for(int e = 0; e <= 100; e++){
 
                 guesses[e] = -1;
                 
                 }
 
             }
+
 
         do{
 
@@ -368,8 +439,11 @@ int main () {
                     else{
 
                         printf("Congratulations you got it!!!!\n");
+                        guesswin = 1;
 
                     } 
+
+                    totalGuess++;
 
                 }
 
@@ -394,6 +468,7 @@ int main () {
                             printf("ITS RIGHT IN BETWEEN! THE NUMBER IS 50!!\n");
 
                             guess = num;
+                            gold = 1;
 
                         }
 
@@ -402,11 +477,13 @@ int main () {
                             if(num > 50){
                                 printf("The number IS higher than 50!\n");
                                 printf("No point deduction for getting it right!!\n");
+                                halveWon++;
                             }
                             else{
                                 printf("The number IS lower than 50!\n");
                                 printf("Point deduction for getting it wrong!!\n");
                                 score-=15;
+                                halveLost++;
                             }
 
                             turn+=1;
@@ -419,10 +496,12 @@ int main () {
                                 printf("The number IS higher than 50!\n");
                                 printf("Point deduction for getting it wrong!!\n");
                                 score-=15;
+                                halveLost++;
                             }
                             else{
                                 printf("The number IS lower than 50!\n");
                                 printf("No point deduction for getting it right!!\n");
+                                halveWon++;
                             }
 
                             turn+=1;
@@ -461,11 +540,13 @@ int main () {
                             if(num % 2 == 0){
                                 printf("The number IS an even number!\n");
                                 printf("No point deduction for getting it right!!\n");
+                                halveWon++;
                             }
                             else{
                                 printf("The number IS an odd number!\n");
                                 printf("Point deduction for getting it wrong!!\n");
                                 score-=15;
+                                halveLost++;
                             }
 
                             turn+=1;
@@ -478,10 +559,12 @@ int main () {
                                 printf("The number IS an even number!\n");
                                 printf("Point deduction for getting it wrong!!\n");
                                 score-=15;
+                                halveLost++;
                             }
                             else{
                                 printf("The number IS an odd number!\n");
                                 printf("No point deduction for getting it right!!\n");
+                                halveWon++;
                             }
 
                             turn+=1;
@@ -529,12 +612,15 @@ int main () {
 
                             printf("GOLDDDD GOLDDDD GOLDDDD GOLDDDD GOLDDDD!!!!!!\n");
                             printf("YOU STRUCK THE JACKPOT!!\n");
+                            gambleWon++;
                             guess = num;
                             gold = 1;
 
                         }
 
                         else if(dice == diceChoice - 1 || dice == diceChoice + 1){
+
+                            gambleWon++;
 
                             for(int c = 1; c <= counter; c++){ //resets everything for a brand new list
 
@@ -575,7 +661,7 @@ int main () {
 
                                     gambleNum = rand()%100 + 1;
 
-                                    for(int a = 1; a <= 101; a++){
+                                    for(int a = 1; a <= 100; a++){
 
                                         if(gambleNum == remainNum[a] && gambleNum != num){ //only accepts numbers that havent been guessed and isnt the number
 
@@ -678,6 +764,7 @@ int main () {
                             else{
 
                                 printf("Congratulations you got it!!!!\n");
+                                guesswin = 1;
 
                             } 
 
@@ -691,12 +778,14 @@ int main () {
                             }
 
                             innerCounter = 0;
+                            totalGuess++;
 
                         }
 
                         else{
                             printf("You hit the absolute stinker!!!! You should never gamble again!!!\n");
                             score-=50;
+                            gambleLost++;
 
                             turn+=1;
                         }
@@ -839,14 +928,14 @@ int main () {
                 space = 0;
                 listIncr = 0;
 
-                if(choice != 5 && gold < 1){
+                if(choice != 5 && gold < 1 && guesswin == 0){
                     score--;
                 }
 
             }while(guess != num);
 
             printf("\n================================\n");
-            printf("The number was %d!!\n",num);
+            printf("\nThe number was %d!!\n",num);
 
             if(score == 100){
                 printf("YOU SCORED PERFECTLY!!!! CONGRATULATIONS!!!\n");
@@ -899,6 +988,9 @@ int main () {
 
             }
 
+            turnStorer[winner] = turn;
+
+            scoreStorer[winner] = score;
 
         }
 
