@@ -1,3 +1,26 @@
+# NumberQuest v1.4 — Statistics & Bug Fixes
+
+This update introduces a new statistics tracker to NumberQuest, allowing players to monitor their performance across multiple games!
+
+## New Features
+
+- **Statistics Tracker:** Displays overall player statistics after each completed game.
+- **Game History Tracking:** Records the score and number of turns taken in every completed game.
+- **Performance Tracking:** Keeps track of best score, average score, average turns, and the fewest turns taken in a game.
+- **Lifetime Guess Counter:** Tracks the total number of valid guesses made across games.
+- **Option Statistics:** Tracks total uses and win percentages for the CutHalf and Gambling categories.
+
+## Bug Fixes & Improvements
+
+- Fixed array loop boundaries to prevent accessing invalid indexes.
+- Fixed total guess tracking to prevent invalid inputs from being counted.
+- Improved accuracy of statistics calculations.
+- Refined game testing and verification across multiple consecutive games.
+
+**Thank you for playing NumberQuest!**
+
+---
+
 # NumberQuest v1.3 — Update Notes
 
 ## New Features
